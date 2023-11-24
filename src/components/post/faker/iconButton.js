@@ -27,7 +27,7 @@ export const iconButton = [
 export const iconPosting = [
   {
     name: "Photos",
-    icon: <FileImage color="#66ff66" fill="white" />,
+    icon: <FileImage color="#66ff66" fill="white" className=" " />,
   },
   {
     name: "Video",

@@ -35,17 +35,19 @@ const CreatePost = () => {
           <div>
             <h1 className="">Tambah ke Postingan Anda</h1>
           </div>
-          <div className="lg:flex lg:space-x-3">
+          <div className="lg:flex ">
             {iconPosting.map((item, index) => (
               <div className="flex space-x-2 items-center " key={index}>
-                {item?.icon}
+                <button className="hover:bg-slate-100 hover:rounded-full w-full h-full  p-2">
+                  {item?.icon}
+                </button>
                 <h1 className="lg:hidden">{item.name}</h1>
               </div>
             ))}
           </div>
         </div>
 
-        <button className="bg-sky-500 text-base  w-full text-slate-200  py-3 rounded-md font-bold">
+        <button className="bg-sky-500 text-base  w-full text-slate-200  py-3 rounded-md font-bold hover:bg-sky-600 hover:text-slate-100">
           Post
         </button>
       </div>
