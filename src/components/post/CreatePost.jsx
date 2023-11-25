@@ -1,32 +1,68 @@
-import Image from "next/image";
-import React from "react";
-import profile from "@/assets/aziz.jpeg";
+"use client";
+
+import { useEffect, useState } from "react";
+import { useAuthContext } from "../provider/AuthProvider";
+import InputField from "./components/InputField";
+import { Profile } from "./components/Profile";
 import { iconPosting } from "./faker/iconButton";
+import { useRouter } from "next/navigation";
 
 const CreatePost = () => {
+  const { user } = useAuthContext("");
+
+  const [auth, setAuth] = useState();
+  const [loading, setLoading] = useState(false);
+  const [post, setPost] = useState("");
+
+  const router = useRouter();
+
+  const handlePost = async () => {
+    if (!post) {
+      return alert("You can not Post with empty feel");
+    }
+    try {
+      setLoading(true);
+      const response = await fetch(
+        "https://devscale-mockapi.fly.dev/api/collections/notes/records",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            user: auth,
+            content: post,
+            additionalData: "4212ganteng",
+          }),
+        }
+      );
+
+      setPost("");
+
+      setLoading(false);
+      router.refresh();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    const isLogedin = JSON.parse(localStorage.getItem("auth"));
+
+    if (isLogedin) {
+      setAuth(isLogedin.name);
+    } else {
+      return router.push("/");
+    }
+  }, []);
   return (
     <div className="card-global ">
       <div className=" gap-4 space-y-3">
-        <div className="flex space-x-3 items-center">
-          <Image src={profile} className="rounded-full" width={60} />
-          <div className="space-y-1">
-            <h1 className="font-bold">Aziz Muslim</h1>
-            <select
-              name=""
-              id=""
-              className="bg-slate-200 p-1 rounded-md text-sm"
-            >
-              <option value="public">Public</option>
-              <option value="private">private</option>
-            </select>
-          </div>
-        </div>
-        <div className="w-full  rounded-full">
-          <textarea
-            placeholder="Whats on your mind, Aziz?"
-            className="border shadow-lg w-full py-2 px-4 h-40 rounded-md resize-none"
-          />
-        </div>
+        <Profile />
+        <InputField
+          handleChange={(e) => setPost(e.target.value)}
+          value={post}
+        />
       </div>
       <hr className="my-4" />
 
@@ -38,7 +74,7 @@ const CreatePost = () => {
           <div className="lg:flex ">
             {iconPosting.map((item, index) => (
               <div className="flex space-x-2 items-center " key={index}>
-                <button className="hover:bg-slate-100 hover:rounded-full w-full h-full  p-2">
+                <button className="hover:bg-slate-100 hover:rounded-full lg:w-full h-full  p-2">
                   {item?.icon}
                 </button>
                 <h1 className="lg:hidden">{item.name}</h1>
@@ -47,8 +83,11 @@ const CreatePost = () => {
           </div>
         </div>
 
-        <button className="bg-sky-500 text-base  w-full text-slate-200  py-3 rounded-md font-bold hover:bg-sky-600 hover:text-slate-100">
-          Post
+        <button
+          className="bg-sky-500 text-base  w-full text-slate-200  py-3 rounded-md font-bold hover:bg-sky-600 hover:text-slate-100"
+          onClick={handlePost}
+        >
+          {loading ? "loading..." : "Post"}
         </button>
       </div>
     </div>

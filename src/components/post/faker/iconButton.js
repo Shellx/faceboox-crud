@@ -34,7 +34,7 @@ export const iconPosting = [
     icon: <Video color="red" fill="red" />,
   },
   {
-    name: "Add Location",
+    name: "Location",
     icon: <MapPin color="white" fill="#ff3333" />,
   },
   {

@@ -1,6 +1,6 @@
-import { Inter } from "next/font/google";
+import { AuthProvider } from "@/components/provider/AuthProvider";
 import "@/styles/globals.css";
-import PostLayout from "@/components/post/PostLayout";
+import { Inter } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,8 +13,8 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="bg-slate-700 w-full">
-          <PostLayout>{children}</PostLayout>
+        <div className="bg-slate-600 w-full">
+          <AuthProvider>{children}</AuthProvider>
         </div>
       </body>
     </html>
